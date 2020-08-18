@@ -160,24 +160,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Import data
-    with open(out_path+add_args_to_string('train', args)+'.pth', 'rb') as in_file:
+    with open(out_path+add_args_to_string('train', args, ["encoded_dim"])+'.pth', 'rb') as in_file:
         train_dataset = torch.load(in_file)
-    with open(out_path+add_args_to_string('test', args)+'.pth', 'rb') as in_file:
+    with open(out_path+add_args_to_string('test', args, ["encoded_dim"])+'.pth', 'rb') as in_file:
         test_dataset = torch.load(in_file)
 
     ### Initialize the network
     net = VarAutoencoder(encoded_space_dim=args.encoded_dim)
-
-    # ### Some examples
-    # # Take an input image (remember to add the batch dimension)
-    # img = test_dataset[0][0].unsqueeze(0)
-    # print('Original image shape:', img.shape)
-    # # Encode the image
-    # img_enc = net.encode(img)
-    # print('Encoded image shape:', img_enc.shape)
-    # # Decode the image
-    # dec_img = net.decode(img_enc)
-    # print('Decoded image shape:', dec_img.shape)
 
     ### Define dataloader
     train_dataloader = DataLoader(train_dataset, batch_size=512, shuffle=True)
