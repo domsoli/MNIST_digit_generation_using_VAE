@@ -104,7 +104,7 @@ def main():
     # Define transformations
     lossy_transform = transforms.Compose([
         transforms.ToTensor(),
-        AddGaussianNoise(std=args.add_noise),
+        AddGaussianNoise(args.add_noise),
         AddOcclusion(args.add_occlusion),
     ])
 
