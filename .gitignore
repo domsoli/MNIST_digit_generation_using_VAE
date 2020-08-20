@@ -1,0 +1,4 @@
+.ipynp_checkpoints/
+autoencoder_progress*
+plots/*
+*.ipynb

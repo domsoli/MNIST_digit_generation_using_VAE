@@ -19,14 +19,14 @@ OUT_PATH = 'datasets/'
 PLOTS_DIR = 'plots/'
 
 
-def add_args_to_string(string, args, exceptions=[]):
+def add_args_to_string(string, args, exceptions=[], sep="_"):
     """
     Append to a string the list of arguments in args with their values.
     """
 
     for arg in vars(args):
         if arg not in exceptions:
-            string += '_{}={}'.format(arg, getattr(args, arg)) if getattr(args, arg) else ''
+            string += '{}{}={}'.format(sep, arg, getattr(args, arg)) if getattr(args, arg) else ''
     return string
 
 

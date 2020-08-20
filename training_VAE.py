@@ -11,7 +11,7 @@ from dataset import add_args_to_string
 from dataset import DoubleMnistDataset, AddGaussianNoise, AddOcclusion
 
 # Constants
-NUM_EPOCHS = 10
+NUM_EPOCHS = 50
 ENCODED_SPACE_DIM = 6
 VERBOSE = False
 
@@ -185,6 +185,8 @@ if __name__ == "__main__":
     # Move all the network parameters to the selected device
     net.to(device)
 
+    # Vector storing training history
+    epoch_loss = []
     ### Training cycle
     for epoch in range(NUM_EPOCHS):
         print('EPOCH %d/%d' % (epoch + 1, NUM_EPOCHS))
@@ -192,12 +194,13 @@ if __name__ == "__main__":
         train_epoch(net, dataloader=train_dataloader, loss_fn=loss_fn, optimizer=optim)
         ### Validation
         val_loss = test_epoch(net, dataloader=test_dataloader, loss_fn=loss_fn, optimizer=optim)
+        epoch_loss.append(val_loss.cpu().numpy())
         # Print Validationloss
         print('\n\n\t VALIDATION - EPOCH %d/%d - loss: %f\n\n' % (epoch + 1, NUM_EPOCHS, val_loss))
 
         ### Plot progress
-        img_noisy = test_dataset[0][0][0].unsqueeze(0).to(device)
-        img_original = test_dataset[0][1][0].unsqueeze(0).to(device)
+        img_noisy = test_dataset[1][0][0].unsqueeze(0).to(device)
+        img_original = test_dataset[1][1][0].unsqueeze(0).to(device)
         net.eval()
         with torch.no_grad():
             rec_img  = net(img_noisy)
@@ -212,8 +215,13 @@ if __name__ == "__main__":
         # Save figures
         os.makedirs('autoencoder_progress_%d_features' % args.encoded_dim, exist_ok=True)
         plt.savefig('autoencoder_progress_%d_features/epoch_%d.png' % (args.encoded_dim, epoch + 1))
-
+        plt.close()
     # Save network parameters
     torch.save(net.state_dict(), params_dir+'net_params_{}.pth'.format(args.encoded_dim))
+
+    with open("loss_history.txt", "a") as infile:
+        infile.write("Latent Space Dimension = {}\n".format(args.encoded_dim))
+        infile.write(", ".join(str(x) for x in epoch_loss))
+        infile.write("\n\n")
 
     print("Network successfully trained")
