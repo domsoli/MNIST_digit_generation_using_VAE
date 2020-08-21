@@ -12,7 +12,7 @@ if __name__ == '__main__':
     X_test = data['input_images'].reshape(len(data['input_images']),28,28)
     y_test = data['output_labels'].astype(int)
     # set encoded dimension to use
-    encoded_space_dim = 10
+    encoded_space_dim = 20
     # set device
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
