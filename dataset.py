@@ -97,7 +97,9 @@ def main():
     parser = argparse.ArgumentParser(description='Create the dataset.')
     parser.add_argument('--add_noise', type=float, default=0, help='Variance of Gaussian noise added over the input image' )
     parser.add_argument('--add_occlusion', type=int, default=0, help='Number of occluded rows over the input image')
+    parser.add_argument('--add_clean_data', action='store_true', help='Add noisy data to original images')
     parser.add_argument('--show', action='store_true', help='Show some sample of the input dataset')
+
     # parse input arguments
     args = parser.parse_args()
 

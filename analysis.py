@@ -22,7 +22,7 @@ plots_dir = 'plots/'
 params_dir = 'params/'
 
 # Parse arguments
-parser = argparse.ArgumentParser(description='Create the dataset.')
+parser = argparse.ArgumentParser(description='Analyze the latent space.')
 parser.add_argument('--add_noise', type=float, default=0, help='Variance of Gaussian noise added over the input image' )
 parser.add_argument('--add_occlusion', type=int, default=0, help='Number of occluded rows over the input image')
 parser.add_argument('--encoded_dim', type=int, default=ENCODED_SPACE_DIM, help='Encoded space dimension')

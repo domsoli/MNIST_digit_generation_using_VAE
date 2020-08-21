@@ -105,7 +105,7 @@ class VarAutoencoder(nn.Module):
 
 
 # Training function
-def train_epoch(net, dataloader, loss_fn, optimizer, verbose=VERBOSE):
+def train_epoch(net, dataloader, loss_fn, optimizer, device, verbose=VERBOSE):
     # Training
     net.train()
     for sample_batch in dataloader:
@@ -125,7 +125,7 @@ def train_epoch(net, dataloader, loss_fn, optimizer, verbose=VERBOSE):
 
 
 # Testing function
-def test_epoch(net, dataloader, loss_fn, optimizer):
+def test_epoch(net, dataloader, loss_fn, device):
     # Validation
     net.eval() # Evaluation mode (e.g. disable dropout)
     with torch.no_grad(): # No need to track the gradients
@@ -152,7 +152,7 @@ def CustomLoss():
 if __name__ == "__main__":
 
     # Parse arguments
-    parser = argparse.ArgumentParser(description='Create the dataset.')
+    parser = argparse.ArgumentParser(description='Define and train the VAE.')
     parser.add_argument('--add_noise', type=float, default=0, help='Variance of Gaussian noise added over the input image' )
     parser.add_argument('--add_occlusion', type=int, default=0, help='Number of occluded rows over the input image')
     parser.add_argument('--encoded_dim', type=int, default=ENCODED_SPACE_DIM, help='Encoded space dimension')
@@ -191,9 +191,9 @@ if __name__ == "__main__":
     for epoch in range(NUM_EPOCHS):
         print('EPOCH %d/%d' % (epoch + 1, NUM_EPOCHS))
         ### Training
-        train_epoch(net, dataloader=train_dataloader, loss_fn=loss_fn, optimizer=optim)
+        train_epoch(net, dataloader=train_dataloader, loss_fn=loss_fn, optimizer=optim, device=device)
         ### Validation
-        val_loss = test_epoch(net, dataloader=test_dataloader, loss_fn=loss_fn, optimizer=optim)
+        val_loss = test_epoch(net, dataloader=test_dataloader, loss_fn=loss_fn, device=device)
         epoch_loss.append(val_loss.cpu().numpy())
         # Print Validationloss
         print('\n\n\t VALIDATION - EPOCH %d/%d - loss: %f\n\n' % (epoch + 1, NUM_EPOCHS, val_loss))

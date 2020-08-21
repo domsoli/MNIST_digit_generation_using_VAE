@@ -2,3 +2,4 @@
 autoencoder_progress*
 plots/*
 *.ipynb
+MNIST/
